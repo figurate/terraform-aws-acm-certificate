@@ -23,5 +23,7 @@ No requirements.
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| certificate\_arn | ARN of ACM certificate |
 
