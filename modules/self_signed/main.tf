@@ -8,19 +8,19 @@ resource "tls_self_signed_cert" "certificate" {
     "digital_signature",
     "server_auth",
   ]
-  key_algorithm = "RSA"
-  private_key_pem = tls_private_key.certificate.private_key_pem
+  key_algorithm         = "RSA"
+  private_key_pem       = tls_private_key.certificate.private_key_pem
   validity_period_hours = 2160
   subject {
-    common_name = var.common_name
+    common_name  = var.common_name
     organization = var.organization
-    country = var.country
+    country      = var.country
   }
 }
 
 module "certificate" {
   source = "../.."
 
-  private_key = tls_private_key.certificate.private_key_pem
+  private_key      = tls_private_key.certificate.private_key_pem
   certificate_body = tls_self_signed_cert.certificate.cert_pem
 }
