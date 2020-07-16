@@ -12,6 +12,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| ca\_common\_name | Certificate Authority common name | `any` | n/a | yes |
 | common\_name | Certificate common name | `any` | n/a | yes |
 | country | Certificate country | `any` | n/a | yes |
 | organization | Certificate organization | `any` | n/a | yes |
