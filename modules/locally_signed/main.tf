@@ -7,11 +7,12 @@ resource "tls_self_signed_cert" "ca_cert" {
     "key_encipherment",
     "digital_signature",
     "server_auth",
+    "cert_signing",
   ]
   key_algorithm         = "RSA"
   private_key_pem       = tls_private_key.ca_cert.private_key_pem
   is_ca_certificate     = true
-  validity_period_hours = 2160
+  validity_period_hours = 4383
   subject {
     common_name  = var.ca_common_name
     organization = var.organization

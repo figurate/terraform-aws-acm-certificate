@@ -21,5 +21,6 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
+| ca\_cert\_pem | CA signing certificate (PEM format) |
 | certificate\_arn | ARN of generated ACM certificate |
 
