@@ -46,7 +46,7 @@ resource "tls_locally_signed_cert" "certificate" {
 module "certificate" {
   source = "../.."
 
-  private_key       = tls_locally_signed_cert.certificate.ca_private_key_pem
+  private_key       = tls_private_key.ca_cert.private_key_pem
   certificate_body  = tls_locally_signed_cert.certificate.cert_request_pem
   certificate_chain = tls_locally_signed_cert.certificate.ca_cert_pem
   certificate_name  = var.common_name

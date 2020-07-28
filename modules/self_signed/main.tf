@@ -21,7 +21,7 @@ resource "tls_self_signed_cert" "certificate" {
 module "certificate" {
   source = "../.."
 
-  private_key      = tls_self_signed_cert.certificate.private_key_pem
+  private_key      = tls_private_key.certificate.private_key_pem
   certificate_body = tls_self_signed_cert.certificate.cert_pem
   certificate_name = var.common_name
 }
