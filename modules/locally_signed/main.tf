@@ -1,18 +1,18 @@
-resource "tls_private_key" "ca_cert" {
+resource "tls_private_key" "trust_anchor" {
   algorithm = "RSA"
 }
 
-resource "tls_self_signed_cert" "ca_cert" {
+resource "tls_self_signed_cert" "trust_anchor" {
   allowed_uses = [
-    "key_encipherment",
-    "digital_signature",
+    "crl_signing",
+    "client_auth",
     "server_auth",
     "cert_signing",
   ]
-  key_algorithm         = "RSA"
-  private_key_pem       = tls_private_key.ca_cert.private_key_pem
+  key_algorithm         = tls_private_key.trust_anchor.algorithm
+  private_key_pem       = tls_private_key.trust_anchor.private_key_pem
   is_ca_certificate     = true
-  validity_period_hours = 4383
+  validity_period_hours = 87600
   subject {
     common_name  = var.ca_common_name
     organization = var.organization
@@ -20,9 +20,13 @@ resource "tls_self_signed_cert" "ca_cert" {
   }
 }
 
-resource "tls_cert_request" "certificate" {
+resource "tls_private_key" "issuer" {
+  algorithm = "RSA"
+}
+
+resource "tls_cert_request" "issuer" {
   key_algorithm   = "RSA"
-  private_key_pem = tls_private_key.ca_cert.private_key_pem
+  private_key_pem = tls_private_key.issuer.private_key_pem
   subject {
     common_name  = var.common_name
     organization = var.organization
@@ -32,21 +36,23 @@ resource "tls_cert_request" "certificate" {
 
 resource "tls_locally_signed_cert" "certificate" {
   allowed_uses = [
-    "key_encipherment",
-    "digital_signature",
+    "crl_signing",
+    "cert_signing",
+    "client_auth",
     "server_auth",
   ]
-  ca_cert_pem           = tls_self_signed_cert.ca_cert.cert_pem
-  ca_key_algorithm      = tls_self_signed_cert.ca_cert.key_algorithm
-  ca_private_key_pem    = tls_private_key.ca_cert.private_key_pem
-  cert_request_pem      = tls_cert_request.certificate.cert_request_pem
-  validity_period_hours = 2160
+  ca_cert_pem           = tls_self_signed_cert.trust_anchor.cert_pem
+  ca_key_algorithm      = tls_self_signed_cert.trust_anchor.key_algorithm
+  ca_private_key_pem    = tls_private_key.trust_anchor.private_key_pem
+  cert_request_pem      = tls_cert_request.issuer.cert_request_pem
+  validity_period_hours = 8760
+  is_ca_certificate = true
 }
 
 module "certificate" {
   source = "../.."
 
-  private_key       = tls_private_key.ca_cert.private_key_pem
+  private_key       = tls_private_key.issuer.private_key_pem
   certificate_body  = tls_locally_signed_cert.certificate.cert_request_pem
   certificate_chain = tls_locally_signed_cert.certificate.ca_cert_pem
   certificate_name  = var.common_name
