@@ -1,12 +1,14 @@
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| acme | ~> 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| acme | n/a |
+| acme | ~> 2.0 |
 | tls | n/a |
 
 ## Inputs

@@ -46,7 +46,7 @@ resource "tls_locally_signed_cert" "certificate" {
   ca_private_key_pem    = tls_private_key.trust_anchor.private_key_pem
   cert_request_pem      = tls_cert_request.issuer.cert_request_pem
   validity_period_hours = 8760
-  is_ca_certificate = true
+  is_ca_certificate     = true
 }
 
 module "certificate" {
