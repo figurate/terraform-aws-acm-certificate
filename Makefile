@@ -10,9 +10,9 @@ clean:
 
 validate:
 	$(TERRAFORM) init && $(TERRAFORM) validate && \
-		$(TERRAFORM) init modules/locally_signed && $(TERRAFORM) validate modules/locally_signed && \
-		$(TERRAFORM) init modules/self_signed && $(TERRAFORM) validate modules/self_signed && \
-		$(TERRAFORM) init modules/letsencrypt && $(TERRAFORM) validate modules/letsencrypt
+		$(TERRAFORM) -chdir=modules/locally_signed init && $(TERRAFORM) -chdir=modules/locally_signed validate && \
+		$(TERRAFORM) -chdir=modules/self_signed init && $(TERRAFORM) -chdir=modules/self_signed validate && \
+		$(TERRAFORM) -chdir=modules/letsencrypt init && $(TERRAFORM) -chdir=modules/letsencrypt validate
 
 test: validate
 	$(CHECKOV) -d /work && \
