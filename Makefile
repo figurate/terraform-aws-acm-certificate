@@ -31,3 +31,6 @@ format:
 		$(TERRAFORM) fmt -list=true ./modules/locally_signed && \
 		$(TERRAFORM) fmt -list=true ./modules/self_signed && \
 		$(TERRAFORM) fmt -list=true ./modules/letsencrypt
+
+release: test
+	git tag $(VERSION) && git push --tags
