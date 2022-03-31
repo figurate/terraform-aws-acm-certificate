@@ -1,26 +1,29 @@
 SHELL:=/bin/bash
 include .env
 
-.PHONY: all clean validate test docs format
+VERSION=$(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
 
-all: validate test docs format
+.PHONY: all clean validate test diagram docs format release
+
+all: test docs format
 
 clean:
 	rm -rf .terraform/
 
 validate:
-	$(TERRAFORM) init && $(TERRAFORM) validate && \
-		$(TERRAFORM) -chdir=modules/locally_signed init && $(TERRAFORM) -chdir=modules/locally_signed validate && \
-		$(TERRAFORM) -chdir=modules/self_signed init && $(TERRAFORM) -chdir=modules/self_signed validate && \
-		$(TERRAFORM) -chdir=modules/letsencrypt init && $(TERRAFORM) -chdir=modules/letsencrypt validate
+	$(TERRAFORM) init -upgrade && $(TERRAFORM) validate && \
+		$(TERRAFORM) -chdir=modules/locally_signed init -upgrade && $(TERRAFORM) -chdir=modules/locally_signed validate && \
+		$(TERRAFORM) -chdir=modules/self_signed init -upgrade && $(TERRAFORM) -chdir=modules/self_signed validate && \
+		$(TERRAFORM) -chdir=modules/letsencrypt init -upgrade && $(TERRAFORM) -chdir=modules/letsencrypt validate
 
 test: validate
-	$(CHECKOV) -d /work && \
-		$(CHECKOV) -d /work/modules/locally_signed && \
-		$(CHECKOV) -d /work/modules/self_signed && \
-		$(CHECKOV) -d /work/modules/letsencrypt
+	$(CHECKOV) -d /work
+	$(TFSEC) /work
 
-docs:
+diagram:
+	$(DIAGRAMS) diagram.py
+
+docs: diagram
 	$(TERRAFORM_DOCS) markdown ./ >./README.md && \
 		$(TERRAFORM_DOCS) markdown ./modules/locally_signed >./modules/locally_signed/README.md && \
 		$(TERRAFORM_DOCS) markdown ./modules/self_signed >./modules/self_signed/README.md && \
