@@ -3,12 +3,15 @@ include .env
 
 VERSION=$(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
 
-.PHONY: all clean validate test diagram docs format release
+.PHONY: all clean providers validate test diagram docs format release
 
 all: test docs format
 
 clean:
 	rm -rf .terraform/
+
+providers:
+	$(TERRAFORM) providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64
 
 validate:
 	$(TERRAFORM) init -upgrade && $(TERRAFORM) validate && \
