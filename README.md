@@ -1,5 +1,7 @@
 # ![AWS](aws-logo.png) ACM Certificate
 
+[![CI](https://github.com/figurate/terraform-aws-acm-certificate/actions/workflows/main.yml/badge.svg)](https://github.com/figurate/terraform-aws-acm-certificate/actions/workflows/main.yml)
+
 Purpose: Manage certificates in AWS.
 
 Rationale: Apply standards and constraints to ACM certificates.
