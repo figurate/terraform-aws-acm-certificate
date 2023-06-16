@@ -8,7 +8,6 @@ resource "tls_self_signed_cert" "certificate" {
     "digital_signature",
     "server_auth",
   ]
-  key_algorithm         = "RSA"
   private_key_pem       = tls_private_key.certificate.private_key_pem
   validity_period_hours = 2160
   subject {
