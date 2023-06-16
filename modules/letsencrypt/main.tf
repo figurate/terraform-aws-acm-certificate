@@ -1,9 +1,9 @@
-resource "tls_private_key" "ca_cert" {
-  algorithm = "RSA"
+module "ca_cert" {
+  source = "../tls_private_key"
 }
 
 resource "acme_registration" "registration" {
-  account_key_pem = tls_private_key.ca_cert.private_key_pem
+  account_key_pem = module.ca_cert.private_key_pem
   email_address   = var.email_address
 }
 
@@ -19,7 +19,7 @@ resource "acme_certificate" "certificate" {
 module "certificate" {
   source = "../.."
 
-  private_key      = tls_private_key.ca_cert.private_key_pem
+  private_key      = module.ca_cert.private_key_pem
   certificate_body = acme_certificate.certificate.certificate_pem
   certificate_name = var.common_name
 }

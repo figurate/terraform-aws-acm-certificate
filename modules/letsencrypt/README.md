@@ -9,7 +9,6 @@
 | Name | Version |
 |------|---------|
 | acme | ~> 2.0 |
-| tls | n/a |
 
 ## Inputs
 

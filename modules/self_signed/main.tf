@@ -1,26 +1,25 @@
-resource "tls_private_key" "certificate" {
-  algorithm = "RSA"
+module "certificate_key" {
+  source = "../tls_private_key"
 }
 
-resource "tls_self_signed_cert" "certificate" {
+module "self_signed_cert" {
+  source = "../tls_self_signed_cert"
   allowed_uses = [
     "key_encipherment",
     "digital_signature",
     "server_auth",
   ]
-  private_key_pem       = tls_private_key.certificate.private_key_pem
+  private_key_pem       = module.certificate_key.private_key_pem
   validity_period_hours = 2160
-  subject {
-    common_name  = var.common_name
-    organization = var.organization
-    country      = var.country
-  }
+  common_name  = var.common_name
+  organization = var.organization
+  country      = var.country
 }
 
 module "certificate" {
   source = "../.."
 
-  private_key      = tls_private_key.certificate.private_key_pem
-  certificate_body = tls_self_signed_cert.certificate.cert_pem
+  private_key      = module.certificate_key.private_key_pem
+  certificate_body = module.self_signed_cert.cert_pem
   certificate_name = var.common_name
 }

@@ -4,9 +4,7 @@ No requirements.
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| tls | n/a |
+No provider.
 
 ## Inputs
 
