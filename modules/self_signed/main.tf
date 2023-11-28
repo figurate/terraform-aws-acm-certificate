@@ -11,9 +11,9 @@ module "self_signed_cert" {
   ]
   private_key_pem       = module.certificate_key.private_key_pem
   validity_period_hours = 2160
-  common_name  = var.common_name
-  organization = var.organization
-  country      = var.country
+  common_name           = var.common_name
+  organization          = var.organization
+  country               = var.country
 }
 
 module "certificate" {

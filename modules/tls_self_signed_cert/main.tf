@@ -1,5 +1,5 @@
 resource "tls_self_signed_cert" "cert" {
-  allowed_uses = var.allowed_uses
+  allowed_uses          = var.allowed_uses
   private_key_pem       = var.private_key_pem
   is_ca_certificate     = var.is_ca_certificate
   validity_period_hours = var.validity_period_hours

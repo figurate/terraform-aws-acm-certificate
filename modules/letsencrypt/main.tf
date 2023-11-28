@@ -1,3 +1,7 @@
+/**
+ * Provision a certificate using Let's Encrypt.
+ */
+
 module "ca_cert" {
   source = "../tls_private_key"
 }

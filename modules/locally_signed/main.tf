@@ -13,9 +13,9 @@ module "trust_anchor" {
   private_key_pem       = module.trust_anchor_key.private_key_pem
   is_ca_certificate     = true
   validity_period_hours = 87600
-  common_name  = var.ca_common_name
-  organization = var.organization
-  country      = var.country
+  common_name           = var.ca_common_name
+  organization          = var.organization
+  country               = var.country
 }
 
 module "issuer" {

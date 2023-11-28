@@ -14,10 +14,7 @@ providers:
 	$(TERRAFORM) providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64
 
 validate:
-	$(TERRAFORM) init -upgrade && $(TERRAFORM) validate && \
-		$(TERRAFORM) -chdir=modules/locally_signed init -upgrade && $(TERRAFORM) -chdir=modules/locally_signed validate && \
-		$(TERRAFORM) -chdir=modules/self_signed init -upgrade && $(TERRAFORM) -chdir=modules/self_signed validate && \
-		$(TERRAFORM) -chdir=modules/letsencrypt init -upgrade && $(TERRAFORM) -chdir=modules/letsencrypt validate
+	$(TERRAFORM) init && $(TERRAFORM) validate
 
 test: validate
 	$(CHECKOV) -d /work
@@ -33,10 +30,10 @@ docs: diagram
 		$(TERRAFORM_DOCS) markdown ./modules/letsencrypt >./modules/letsencrypt/README.md
 
 format:
-	$(TERRAFORM) fmt -list=true ./ && \
-		$(TERRAFORM) fmt -list=true ./modules/locally_signed && \
-		$(TERRAFORM) fmt -list=true ./modules/self_signed && \
-		$(TERRAFORM) fmt -list=true ./modules/letsencrypt
+	$(TERRAFORM) fmt -list=true -recursive
+
+it:
+	$(TERRAFORM) test
 
 release: test
 	git tag $(VERSION) && git push --tags
